@@ -5,7 +5,7 @@ Describe your project. Why is it interesting? Why is it interesting to you perso
 
 ### Analysis
 
-We will be using data abstraction, object-orientation and state modification in the implementation of task objects. These objects will store information like time, location, date, and tags that can be modified, displayed and shared by other parts of the program. We will use filter to select a subset of all tasks to display and map to transform the task data objects to objects that can be used by the gui.
+We will be using data abstraction, object-orientation and state modification in the implementation of task objects. These objects will store information like time, location, date, and tags that can be modified, displayed and shared by other parts of the program. We will use filter to select a subset of all tasks to display and map to transform the task data objects to objects that can be used by the gui. We will use iterative recursion to perform operations on each element of a list of tasks.
 
 <!--
 Explain what approaches from class you will bring to bear on the project.
@@ -56,7 +56,7 @@ If you are using some other starting materials, explain what they are. Basically
 
 At completion we will be able to display a schedule and add/remove tasks from it. We will also be able to filter based on tags or task types and set priorities for tasks.
 
-This program will store and display user inputted data. We can show it working but adding, removing or modifying data through the program.
+This program will store and display user inputted data. We can show it working by adding, removing or modifying data through the program.
 <!--
 Explain exactly what you'll have at the end. What will it be able to do at the live demo?
 
@@ -71,38 +71,39 @@ Will it be interactive? Can you show it working? This project involves a live de
 We have divided our goals for this program into core objectives and stretch goals.
 # Core
 Basic Task management system  
--task object  
--priority  
--deadline  
--expected duration (total)  
--expected time remaining  
--basic interface (GUI/REPL)  
--auto-gen daily TODO list  
--server for cross device syncing  
+- task object  
+  - priority  
+  - deadline  
+  - expected duration (total)  
+  - expected time remaining  
+  - tags
+- basic interface (GUI/REPL)  
+- auto-gen daily TODO list  
+- server for cross device syncing  
 
 # Stretch
--better features for multi-user systems  
- -group tasks  
-  -shared task ownership  
-  -some way to check status of other people's tasks  
-  -some way to set someone else's task as 'blocking' one of your tasks
-  -create/assign tasks for other people  
-  -sub tasks  
-  -ordered and unordered  
--daily to-do options  
- -based on day of the week  
- -skip a task for today and get a new one  
- -get tasks from different 'categories' on different days (i.e. don't get work tasks on the weekend)  
--additional task options  
- -put a task on hold (set period of time or indefinitely)  
- -time slice options (good for large tasks)  
- -ongoing tasks with no real time estimate  
- -only one sub-task per day option  
--automatically increase priority of tasks that are due soon or overdue  
- -some options/hardcoded control on maximum amount to increase by  
--'flexible' option that gives a date range instead of a single due date  
--reminders  
--GUI  
+- better features for multi-user systems  
+  - group tasks  
+    - shared task ownership  
+    - some way to check status of other people's tasks  
+    - some way to set someone else's task as 'blocking' one of your tasks
+    - create/assign tasks for other people  
+  - sub tasks  
+  - ordered and unordered  
+- daily to-do options  
+  - based on day of the week  
+  - skip a task for today and get a new one  
+  - get tasks from different 'categories' on different days (i.e. don't get work tasks on the weekend)  
+- additional task options  
+  - put a task on hold (set period of time or indefinitely)  
+  - time slice options (good for large tasks)  
+  - ongoing tasks with no real time estimate  
+  - only one sub-task per day option  
+- automatically increase priority of tasks that are due soon or overdue  
+  - some options/hardcoded control on maximum amount to increase by  
+- 'flexible' option that gives a date range instead of a single due date  
+- reminders  
+- GUI
 
   
 Once we complete our core objectives then we will have completed the core of our project, however there are many additional components that we would like to implement. How many of these are actually implemented will depend on how difficult the core objectives are and how viable each stretch objective is.
@@ -112,19 +113,10 @@ If you include some kind of _quantitative analysis,_ that would be good.
 -->
 
 ## Architecture Diagram
-
-![Architecture Diagram](/SimpleTaskManagerDiagramV1.png?raw=true "Diagram")
-
-This diagram has two major parts: the client and the server. The data will be moved between these components using JSON as shown. 
-
-Within each part, we will handle the data as needed for whatever it will be used for. On the client side we have user input coming through the ui and being stored as data and sorting and filtering the data for display to the user.  
-
-On the client side we will be moving between the client interface data, which will be represented using JSON, to the internal represention of the data in the program.  
-<!--
 Upload the architecture diagram you made for your slide presentation to your repository, and include it in-line here.
 
 Create several paragraphs of narrative to explain the pieces and how they interoperate.
--->
+
 ## Schedule
 Explain how you will go from proposal to finished product. 
 
@@ -137,13 +129,16 @@ You will be expected to turn in code, documentation, and data (as appropriate) a
 Write concrete steps for your schedule to move from concept to working system. 
 
 ### First Milestone (Sun Apr 9)
-Which portion of the work will be completed (and committed to Github) by this day? 
+
+Basic task objects can be fetched from the server, and basic interactions (view, add, delete, edit, sync) can be done through the REPL.
 
 ### Second Milestone (Sun Apr 16)
-Which portion of the work will be completed (and committed to Github) by this day?  
+
+Can generate a "today's tasks" list, and have some simple customizations for it (Hours of work for the day, filter out certain tags)
 
 ### Public Presentation (Mon Apr 24, Wed Apr 26, or Fri Apr 28 [your date to be determined later])
-What additionally will be completed before the public presentation?
+
+Basic GUI to view, add, edit, and delete tasks. Panel for daily task list. Maybe generate panels for ever tags (or allow users to create a panel for a specific tags). Other stretch goals.
 
 ## Group Responsibilities
 Here each group member gets a section where they, as an individual, detail what they are responsible for in this project. Each group member writes their own Responsibility section. Include the milestones and final deliverable.
