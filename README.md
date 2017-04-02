@@ -1,4 +1,4 @@
-# Project Title Goes Here (10 words maximum)
+# Simple Task Manager
 
 ### Statement
 Describe your project. Why is it interesting? Why is it interesting to you personally? What do you hope to learn? 
