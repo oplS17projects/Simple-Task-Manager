@@ -113,18 +113,10 @@ If you include some kind of _quantitative analysis,_ that would be good.
 -->
 
 ## Architecture Diagram
-![Architecture Diagram](/SimpleTaskManagerDiagramV1.png?raw=true "Diagram")
-
-This diagram has two major parts: the client and the server. The data will be moved between these components using JSON as shown. 
-
-Within each part, we will handle the data as needed for whatever it will be used for. On the client side we have user input coming through the ui and being stored as data and sorting and filtering the data for display to the user.  
-
-On the client side we will be moving between the client interface data, which will be represented using JSON, to the internal represention of the data in the program.  
-<!--
 Upload the architecture diagram you made for your slide presentation to your repository, and include it in-line here.
 
 Create several paragraphs of narrative to explain the pieces and how they interoperate.
--->
+
 ## Schedule
 Explain how you will go from proposal to finished product. 
 
@@ -138,17 +130,22 @@ Write concrete steps for your schedule to move from concept to working system.
 
 ### First Milestone (Sun Apr 9)
 
-Basic task objects can be fetched from the server, and basic interactions (view, add, delete, edit, sync) can be done through the REPL.
+Basic task objects can be fetched from the server, and basic interactions (view, add, delete, edit, sync) can be done through the REPL.  
+
+Server side application will be able to store basic task objects and send them to client.
 
 ### Second Milestone (Sun Apr 16)
 
-Can generate a "today's tasks" list, and have some simple customizations for it (Hours of work for the day, filter out certain tags)
+Can generate a "today's tasks" list, and have some simple customizations for it (Hours of work for the day, filter out certain tags)  
+Full basic server functionality will be implemented.
 
 ### Public Presentation (Mon Apr 24, Wed Apr 26, or Fri Apr 28 [your date to be determined later])
 
-Basic GUI to view, add, edit, and delete tasks. Panel for daily task list. Maybe generate panels for ever tags (or allow users to create a panel for a specific tags). Other stretch goals.
+Basic GUI to view, add, edit, and delete tasks. Panel for daily task list. Maybe generate panels for ever tags (or allow users to create a panel for a specific tags). Other stretch goals.  
+Application will be functional and server stretch goals may be implemented. 
 
-## Group Responsibilities
+## Group Responsibilities  
+<!--
 Here each group member gets a section where they, as an individual, detail what they are responsible for in this project. Each group member writes their own Responsibility section. Include the milestones and final deliverable.
 
 Please use Github properly: each individual must make the edits to this file representing their own section of work.
@@ -160,12 +157,6 @@ Please use Github properly: each individual must make the edits to this file rep
 * Identify who is team lead.
 
 In the headings below, replace the silly names and GitHub handles with your actual ones.
-
-### Susan Scheme @susanscheme
-will write the....
-
-### Leonard Lambda @lennylambda
-will work on...
-
-### Frank Funktions @frankiefunk 
-Frank is team lead. Additionally, Frank will work on...   
+-->
+### Chris Guyott @cguyott
+Will write the server side program and networking.
