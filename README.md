@@ -69,7 +69,7 @@ Will it be interactive? Can you show it working? This project involves a live de
 
 ### Evaluation of Results
 We have divided our goals for this program into core objectives and stretch goals.
-# Core
+#### Core
 Basic Task management system  
 - task object  
   - priority  
@@ -81,7 +81,7 @@ Basic Task management system
 - auto-gen daily TODO list  
 - server for cross device syncing  
 
-# Stretch
+#### Stretch
 - better features for multi-user systems  
   - group tasks  
     - shared task ownership  
@@ -168,5 +168,9 @@ Please use Github properly: each individual must make the edits to this file rep
 
 In the headings below, replace the silly names and GitHub handles with your actual ones.
 -->
+### Cassandra Cooper @c-cooper:
+I am responsible for all baseline client code, including the task object, all sorting, filtering, and interaction functionality, and sending requests to the server (to sync/get full list).
+
+
 ### Chris Guyott @cguyott
 Will write the server side program and networking.
