@@ -70,39 +70,40 @@ Will it be interactive? Can you show it working? This project involves a live de
 ### Evaluation of Results
 We have divided our goals for this program into core objectives and stretch goals.
 # Core
-Basic Task management system
--task object
--priority
--deadline
--expected duration (total)
--expected time remaining
--basic interface (GUI/REPL)
--auto-gen daily TODO list
--server for cross device syncing
+Basic Task management system  
+-task object  
+-priority  
+-deadline  
+-expected duration (total)  
+-expected time remaining  
+-basic interface (GUI/REPL)  
+-auto-gen daily TODO list  
+-server for cross device syncing  
 
 # Stretch
--better features for multi-user systems
- -group tasks
-  -shared task ownership
-   -some way to check status of other people's tasks
-   -some way to set someone else's task as 'blocking' one of your tasks
-   -create/assign tasks for other people
-   -sub tasks
-   -ordered and unordered
--daily to-do options
- -based on day of the week
- -skip a task for today and get a new one
- -get tasks from different 'categories' on different days (i.e. don't get work tasks on the weekend)
--additional task options
- -put a task on hold (set period of time or indefinitely)
- -time slice options (good for large tasks)
- -ongoing tasks with no real time estimate
- -only one sub-task per day option
- -automatically increase priority of tasks that are due soon or overdue
- -some options/hardcoded control on maximum amount to increase by
- -'flexible' option that gives a date range instead of a single due date
- -reminders
- -GUI
+-better features for multi-user systems  
+ -group tasks  
+  -shared task ownership  
+  -some way to check status of other people's tasks  
+  -some way to set someone else's task as 'blocking' one of your tasks
+  -create/assign tasks for other people  
+  -sub tasks  
+  -ordered and unordered  
+-daily to-do options  
+ -based on day of the week  
+ -skip a task for today and get a new one  
+ -get tasks from different 'categories' on different days (i.e. don't get work tasks on the weekend)  
+-additional task options  
+ -put a task on hold (set period of time or indefinitely)  
+ -time slice options (good for large tasks)  
+ -ongoing tasks with no real time estimate  
+ -only one sub-task per day option  
+-automatically increase priority of tasks that are due soon or overdue  
+ -some options/hardcoded control on maximum amount to increase by  
+-'flexible' option that gives a date range instead of a single due date  
+-reminders  
+-GUI  
+
   
 Once we complete our core objectives then we will have completed the core of our project, however there are many additional components that we would like to implement. How many of these are actually implemented will depend on how difficult the core objectives are and how viable each stretch objective is.
 <!--
