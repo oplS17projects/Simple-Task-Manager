@@ -113,10 +113,18 @@ If you include some kind of _quantitative analysis,_ that would be good.
 -->
 
 ## Architecture Diagram
+![Architecture Diagram](/SimpleTaskManagerDiagramV1.png?raw=true "Diagram")
+
+This diagram has two major parts: the client and the server. The data will be moved between these components using JSON as shown. 
+
+Within each part, we will handle the data as needed for whatever it will be used for. On the client side we have user input coming through the ui and being stored as data and sorting and filtering the data for display to the user.  
+
+On the client side we will be moving between the client interface data, which will be represented using JSON, to the internal represention of the data in the program.  
+<!--
 Upload the architecture diagram you made for your slide presentation to your repository, and include it in-line here.
 
 Create several paragraphs of narrative to explain the pieces and how they interoperate.
-
+-->
 ## Schedule
 Explain how you will go from proposal to finished product. 
 
