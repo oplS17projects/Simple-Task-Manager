@@ -1,7 +1,9 @@
 # Simple Task Manager
 
 ### Statement
-Describe your project. Why is it interesting? Why is it interesting to you personally? What do you hope to learn? 
+<!-- Describe your project. Why is it interesting? Why is it interesting to you personally? What do you hope to learn? 
+-->
+We are creating a basic task management system, which will include functionality to sync across devices, and auto-generate a daily "to-do" list from existing tasks (based on a number of user set parameters). This will be a good oportunity to see how functional programming might work in an application setting, rather than simply as a quick fetch script. The addition of an auto-generated todo list is also something we have no found in other individual task management/todo list software (Todoist, Wunderlist, etc), and we hope to find a good way to impliment it. We hope to learn how scheme and functional programming might be applied in a formal application, rather than just as a simple script.
 
 ### Analysis
 
