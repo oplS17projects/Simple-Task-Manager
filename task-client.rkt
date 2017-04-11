@@ -7,7 +7,17 @@
 (define taskFile "tasks")
 
 ; list of all fields in a task object
-(define taskFields (list 'name 'due 'ID))
+(define taskFields (list
+                    'name
+                    'due
+                    'ID
+                    'priority))
+
+(define emptyTask
+  (make-immutable-hasheq
+   (map (lambda (key)
+          (cons key ""))
+        taskFields)))
 
 ; read the task list from the json file
 (define (readTaskList)
@@ -66,9 +76,11 @@
     (write "Task: ")
     (write (hash-ref Task 'name))
     (write ", Due: ")
-    (writeln (hash-ref Task 'due))))
+    (write (hash-ref Task 'due))
+    (write ", Priority: ")
+    (writeln (hash-ref Task 'priority))))
 
-; 
+; change the given fields in a task object to the given values
 (define (changeTaskObject task fields)
   (make-immutable-hasheq
    (map (lambda (key)
@@ -79,12 +91,8 @@
         taskFields)))
 
 ; Create a new task object
-(define (makeTask name due id)
-  (make-immutable-hasheq
-   (list
-    (cons 'name name)
-    (cons 'due due)
-    (cons 'ID id))))
+(define (makeTask fields)
+  (changeTaskObject emptyTask fields))
 
 ; Create a new task list object
 (define (makeTaskList taskPairs id)
@@ -94,17 +102,19 @@
     (cons 'tasks taskPairs))))
 
 ; Create a new task with specified name and date and add it to the task list. Write result in json file.
-(define (addTask name due id)
+(define (addTask id fields)
   (let ([taskList (readTaskList)]
         [out (open-output-file taskFile #:exists 'truncate)])
     (begin
       (write-json
        (makeTaskList
         (cons ; add new task to list of existing tasks
-         (makeTask name due
-                   (if (equal? id 'auto) ; if an ID is provided, use it. Otherwise generate automatically
-                       (hash-ref taskList 'nextID)
-                       id))
+         (makeTask
+          (cons
+           (cons 'ID (if (equal? id 'auto) ; if an ID is provided, use it. Otherwise generate automatically
+                         (hash-ref taskList 'nextID)
+                         id))
+           fields))
          (hash-ref taskList 'tasks))
         (if (equal? id 'auto) ; if we auto-generated the task ID, increment the 'next ID' value on the list object
             (+ (hash-ref taskList 'nextID) 1)
