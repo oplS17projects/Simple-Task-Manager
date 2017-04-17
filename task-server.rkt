@@ -3,8 +3,6 @@
 (require json)
 (require racket/tcp)
 
-; Unfortunately I ran into issues with my cs account where I am not able to do anything server side so this code is largely untested. This will be resolved ASAP.
-
 ; File path to store json data in
 (define taskFile "tasks")
 
@@ -35,12 +33,12 @@
       (close-output-port out))))
 
 ; Sets up ports
-(define listener (tcp-listen 22))
+(define listener (tcp-listen 23))
 (define-values (in out) (tcp-accept listener))
 
 (define loop
   ((let ([input (read in)])
     (cond
-      [(eqv? input "sync-up") (overrideTaskList (read in))]
-      [(eqv? input "sync-down-override") (write taskFile out)]))
+      [(eqv? (car input) 'sync-up) (overrideTaskList (cadr input))]
+      [(eqv? (car input) 'sync-down-override) (write (readTaskList) out)]))
   (loop)))
