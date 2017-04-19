@@ -102,7 +102,8 @@
     (cons 'nextID id)
     (cons 'tasks taskPairs))))
 
-; Create a new task with specified name and date and add it to the task list. Write result in json file.
+; Create a new task with specified fields and add it to the task list. Write result in json file.
+; the id can either be a numerical ID, or the 'auto symbol, which will automatically generate an id based on the task list
 (define (addTask id fields)
   (let ([taskList (readTaskList)]
         [out (open-output-file taskFile #:exists 'truncate)])
@@ -127,17 +128,19 @@
 (define (overrideTaskList taskPairs)
   (let ([out (open-output-file taskFile #:exists 'truncate)])
     (begin
-      (write-json (makeTaskList taskPairs) out)
+      (write-json (makeTaskList taskPairs (length taskPairs)) out)
       (close-output-port out))))
+
+; Code for testing
+(define (tests)
+  (begin (overrideTaskList '())
+         (addTask 'auto (list (cons 'name "OPL Exploration 1") (cons 'due "12 Mar 17") (cons 'priority "high")))
+         (addTask 'auto (list (cons 'name "OPL Partner Declarations") (cons 'due "19 Mar 17") (cons 'priority "low")))
+         (addTask 'auto (list (cons 'name "OPL Exploration 2") (cons 'due "26 Mar 17") (cons 'priority "medium")))
+         (editTask 1 (list (cons 'priority "very high") (cons 'due "18 Mar 17")))))
 
 ; Connects to the uml cs server and defines in and out and input and output ports
 (define-values (in out) (tcp-connect "cs.uml.edu" 23))
-
-; Code for testing
-(overrideTaskList (list
-                   (makeTask "OPL Exploration 1" "12 Mar 17")
-                   (makeTask "OPL Partner Declarations" "19 Mar 17")
-                   (makeTask "OPL Exploration 2" "26 Mar 17")))
 
 ; Procedure for sending current tasks to server
 (define (sync-up)
@@ -147,4 +150,3 @@
 (define (sync-down-override)
   ((write (list 'sync-down-override) out)
   (overrideTaskList (read in))))
-
