@@ -11,14 +11,14 @@
                     'name
                     'due
                     'ID
-                    'priority))
+                    'priority
+                    'duration))
 
 (define emptyTask
   (make-immutable-hasheq
    (map (lambda (key)
           (cons key ""))
         taskFields)))
-
 
 ; read the task list from the json file
 (define (readTaskList)
@@ -46,10 +46,10 @@
           (write-json ;add new version of task to task list
            (makeTaskList
             (cons (changeTaskObject oldTask fields) (hash-ref taskList 'tasks))
-            (hash-ref taskList 'nextID))
+            (hash-ref taskList 'nextID)
+            (hash-ref taskList 'workHours))
            out)
           (close-output-port out))))))
-
 
 ; delete a task with a given ID
 (define (deleteTask id)
@@ -59,7 +59,8 @@
       (write-json
        (makeTaskList
         (filter (lambda (t) (not (taskID? t id))) (hash-ref taskList 'tasks))
-        (hash-ref taskList 'nextID))
+        (hash-ref taskList 'nextID)
+        (hash-ref taskList 'workHours))
        out)
       (close-output-port out))))
 
@@ -74,11 +75,14 @@
 ; Display a single Task object
 (define (writeTaskObject Task)
   (begin
-    (write "Task: ")
+    (write 'Task: )
     (write (hash-ref Task 'name))
-    (write ", Due: ")
+    (write ', Due: )
     (write (hash-ref Task 'due))
-    (write ", Priority: ")
+    (write ', Duration: )
+    (write (hash-ref Task 'duration))
+    (write 'hours)
+    (write ', Priority: )
     (writeln (hash-ref Task 'priority))))
 
 ; change the given fields in a task object to the given values
@@ -96,10 +100,11 @@
   (changeTaskObject emptyTask fields))
 
 ; Create a new task list object
-(define (makeTaskList taskPairs id)
+(define (makeTaskList taskPairs id workHours)
   (make-immutable-hasheq
    (list
     (cons 'nextID id)
+    (cons 'workHours workHours)
     (cons 'tasks taskPairs))))
 
 ; Create a new task with specified fields and add it to the task list. Write result in json file.
@@ -120,33 +125,57 @@
          (hash-ref taskList 'tasks))
         (if (equal? id 'auto) ; if we auto-generated the task ID, increment the 'next ID' value on the list object
             (+ (hash-ref taskList 'nextID) 1)
-            (hash-ref taskList 'nextID)))
+            (hash-ref taskList 'nextID))
+        (hash-ref taskList 'workHours))
        out)
       (close-output-port out))))
 
-; Create a new task list to override the existing one in json file
-(define (overrideTaskList taskPairs)
+; Create a new empty task list
+(define (overrideTaskList)
   (let ([out (open-output-file taskFile #:exists 'truncate)])
     (begin
-      (write-json (makeTaskList taskPairs (length taskPairs)) out)
+      (write-json (makeTaskList '() 0 8) out)
       (close-output-port out))))
+
+; sort by due date, grab tasks until duration totals to certain value
+; once we add tags, we can filter our certain tags pretty trivially before sorting 
+(define (getTodaysTasks)
+  (let ([taskList (readTaskList)])
+    (getTasksForNHours (hash-ref taskList 'workHours)
+                       (sort (hash-ref taskList 'tasks) < #:key (lambda (x) (hash-ref x 'due))))))
+
+; Extract tasks until total duration hours reaches/exceeds given value. Skip tasks with no duration
+(define (getTasksForNHours hours tasks)
+  (define (iter desiredHours currentHours allTasks newTasks)
+    (if (or (< currentHours desiredHours) (null? allTasks))
+        newTasks
+        (if (equal? "" (hash-ref (car allTasks) 'duration))
+            (iter desiredHours currentHours (cdr allTasks) newTasks)
+            (iter desiredHours
+                  (+ currentHours
+                     (hash-ref (car allTasks) 'duration))
+                  (cdr allTasks)
+                  (cons (car allTasks) newTasks)))))
+  (iter hours 0 tasks '()))
+        
 
 ; Code for testing
 (define (tests)
-  (begin (overrideTaskList '())
-         (addTask 'auto (list (cons 'name "OPL Exploration 1") (cons 'due "12 Mar 17") (cons 'priority "high")))
-         (addTask 'auto (list (cons 'name "OPL Partner Declarations") (cons 'due "19 Mar 17") (cons 'priority "low")))
-         (addTask 'auto (list (cons 'name "OPL Exploration 2") (cons 'due "26 Mar 17") (cons 'priority "medium")))
-         (editTask 1 (list (cons 'priority "very high") (cons 'due "18 Mar 17")))))
+  (begin (overrideTaskList)
+         (addTask 'auto (list (cons 'name "OPL Exploration 1") (cons 'due "12 Mar 17") (cons 'priority "high") (cons 'duration 3)))
+         (addTask 'auto (list (cons 'name "OPL Partner Declarations") (cons 'due "19 Mar 17") (cons 'priority "low") (cons 'duration 4)))
+         (addTask 'auto (list (cons 'name "OPL Exploration 2") (cons 'due "26 Mar 17") (cons 'priority "medium") (cons 'duration 2)))
+         (editTask 1 (list (cons 'priority "very high") (cons 'duration 1)))
+         (getTodaysTasks)))
 
 ; Connects to the uml cs server and defines in and out and input and output ports
-(define-values (in out) (tcp-connect "cs.uml.edu" 23))
+;(define-values (in out) (tcp-connect "cs.uml.edu" 23))
 
 ; Procedure for sending current tasks to server
-(define (sync-up)
-  (write (list 'sync-up (readTaskList)) out))
+;(define (sync-up)
+;  (write (list 'sync-up (readTaskList)) out))
 
 ; Procedure for replacing current tasks with those on the server
-(define (sync-down-override)
-  ((write (list 'sync-down-override) out)
-  (overrideTaskList (read in))))
+;(define (sync-down-override)
+;  ((write (list 'sync-down-override) out)
+;  (overrideTaskList (read in))))
