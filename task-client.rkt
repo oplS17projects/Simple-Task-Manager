@@ -27,13 +27,18 @@
 
 ; Display the entire task list
 (define (displayTasks)
-  (define (iter list)
-    (if (null? list)
-        (void)
-        (begin
-          (writeTaskObject (car list))
-          (iter (cdr list)))))
-  (iter (hash-ref (readTaskList) 'tasks)))
+  (displayTaskList (hash-ref (readTaskList) 'tasks)))
+
+(define (displayTodaysTasks)
+  (displayTaskList (getTodaysTasks)))
+
+; Display the given task list
+(define (displayTaskList list)
+  (if (null? list)
+      (void)
+      (begin
+        (writeTaskObject (car list))
+        (displayTaskList (cdr list)))))
 
 ; Find a task by ID and change the given fields to their values.
 ; the fields argument is a list of (key, value) pairs to be updated to the given values
@@ -146,8 +151,15 @@
 ; once we add tags, we can filter our certain tags pretty trivially before sorting 
 (define (getTodaysTasks)
   (let ([taskList (readTaskList)])
-    (getTasksForNHours (hash-ref taskList 'workHours)
-                       (sort (hash-ref taskList 'tasks) < #:key (lambda (x) (hash-ref x 'due))))))
+    (reverse (getTasksForNHours (hash-ref taskList 'workHours)
+                       (sortByPriorityDue (hash-ref taskList 'tasks))))))
+
+(define (sortByPriorityDue tasks)
+  (append (sort (filter (lambda (x) (equal? "very high" (hash-ref x 'priority))) tasks) < #:key (lambda (x) (hash-ref x 'due)))
+          (sort (filter (lambda (x) (equal? "high" (hash-ref x 'priority))) tasks) < #:key (lambda (x) (hash-ref x 'due)))
+          (sort (filter (lambda (x) (equal? "medium" (hash-ref x 'priority))) tasks) < #:key (lambda (x) (hash-ref x 'due)))
+          (sort (filter (lambda (x) (equal? "low" (hash-ref x 'priority))) tasks) < #:key (lambda (x) (hash-ref x 'due)))
+          (sort (filter (lambda (x) (equal? "very low" (hash-ref x 'priority))) tasks) < #:key (lambda (x) (hash-ref x 'due)))))
 
 ; Extract tasks until total duration hours reaches/exceeds given value. Skip tasks with no duration
 (define (getTasksForNHours hours tasks)
@@ -156,15 +168,13 @@
         newTasks
         (if (equal? "" (hash-ref (car allTasks) 'duration))
             (iter desiredHours currentHours (cdr allTasks) newTasks)
-            (if (< desiredHours (+ currentHours
-                                   (hash-ref(car allTasks) 'duration)))
-                (iter desiredHours currentHours (cdr allTasks) newTasks)
-                (iter desiredHours
-                      (+ currentHours
-                         (hash-ref (car allTasks) 'duration))
-                      (cdr allTasks)
-                      (cons (car allTasks) newTasks))))))
-  (iter hours 0 tasks '()))
+            (iter desiredHours
+                  (+ currentHours
+                     (hash-ref (car allTasks) 'duration))
+                  (cdr allTasks)
+                  (cons (car allTasks) newTasks)))))
+  (let ([durationTasks (filter (lambda (x) (number? (hash-ref x 'duration))) tasks)])
+    (iter hours 0 durationTasks '())))
 
 ; Creates a date object without caring about time, day of the week, or day of the year, and auto-filling some fields
 (define (simpleMakeDate day month year)
@@ -176,7 +186,7 @@
          (addTask 'auto (list (cons 'name "OPL Exploration 1") (cons 'due (simpleMakeDate 12 3 2017)) (cons 'priority "high") (cons 'duration 3)))
          (addTask 'auto (list (cons 'name "OPL Partner Declarations") (cons 'due (simpleMakeDate 19 3 2017)) (cons 'priority "low") (cons 'duration 4)))
          (addTask 'auto (list (cons 'name "OPL Exploration 2") (cons 'due (simpleMakeDate 26 3 2017)) (cons 'priority "medium") (cons 'duration 2)))
-         (addTask 'auto (list (cons 'name "OPL Final Presentation") (cons 'due (simpleMakeDate 28 4 2017)) (cons 'priority "high") (cons 'duration 5)))
+         (addTask 'auto (list (cons 'name "Prepare OPL Final Presentation") (cons 'due (simpleMakeDate 28 4 2017)) (cons 'priority "high") (cons 'duration 5)))
          (editTask 1 (list (cons 'priority "very high") (cons 'duration 3)))
          (getTodaysTasks)))
 
