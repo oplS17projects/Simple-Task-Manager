@@ -4,6 +4,17 @@
 (require racket/tcp)
 (require racket/date)
 
+(provide addTask)
+(provide editTask)
+(provide deleteTask)
+(provide overrideTaskList)
+(provide getTodaysTasks)
+(provide readTaskList)
+(provide getTaskWithID)
+(provide changeWorkHours)
+(provide dateString)
+(provide simpleMakeDate)
+
 ; file path to store json data in
 (define taskFile "tasks")
 
@@ -116,6 +127,14 @@
     (cons 'nextID id)
     (cons 'workHours workHours)
     (cons 'tasks taskPairs))))
+
+; change desired working hours of a task list
+(define (changeWorkHours hours)
+  (let ([taskList (readTaskList)]
+        [out (open-output-file taskFile #:exists 'truncate)])
+    (begin
+      (write-json (makeTaskList (hash-ref taskList 'tasks) (hash-ref taskList 'nextID) hours) out)
+      (close-output-port out))))
 
 ; Create a new task with specified fields and add it to the task list. Write result in json file.
 ; the id can either be a numerical ID, or the 'auto symbol, which will automatically generate an id based on the task list
