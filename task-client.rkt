@@ -2,6 +2,7 @@
 
 (require json)
 (require racket/tcp)
+(require racket/date)
 
 ; file path to store json data in
 (define taskFile "tasks")
@@ -78,12 +79,16 @@
     (write 'Task: )
     (write (hash-ref Task 'name))
     (write ', Due: )
-    (write (hash-ref Task 'due))
+    (write (dateString (hash-ref Task 'due)))
     (write ', Duration: )
     (write (hash-ref Task 'duration))
     (write 'hours)
     (write ', Priority: )
     (writeln (hash-ref Task 'priority))))
+
+; pulls string to display a date
+(define (dateString seconds)
+  (date->string (seconds->date seconds)))
 
 ; change the given fields in a task object to the given values
 (define (changeTaskObject task fields)
@@ -147,35 +152,42 @@
 ; Extract tasks until total duration hours reaches/exceeds given value. Skip tasks with no duration
 (define (getTasksForNHours hours tasks)
   (define (iter desiredHours currentHours allTasks newTasks)
-    (if (or (< currentHours desiredHours) (null? allTasks))
+    (if (or (< desiredHours currentHours) (null? allTasks))
         newTasks
         (if (equal? "" (hash-ref (car allTasks) 'duration))
             (iter desiredHours currentHours (cdr allTasks) newTasks)
-            (iter desiredHours
-                  (+ currentHours
-                     (hash-ref (car allTasks) 'duration))
-                  (cdr allTasks)
-                  (cons (car allTasks) newTasks)))))
+            (if (< desiredHours (+ currentHours
+                                   (hash-ref(car allTasks) 'duration)))
+                (iter desiredHours currentHours (cdr allTasks) newTasks)
+                (iter desiredHours
+                      (+ currentHours
+                         (hash-ref (car allTasks) 'duration))
+                      (cdr allTasks)
+                      (cons (car allTasks) newTasks))))))
   (iter hours 0 tasks '()))
-        
+
+; Creates a date object without caring about time, day of the week, or day of the year, and auto-filling some fields
+(define (simpleMakeDate day month year)
+  (date->seconds (make-date 0 0 0 day month year 0 0 (date-dst? (current-date)) (date-time-zone-offset (current-date)))))
 
 ; Code for testing
 (define (tests)
   (begin (overrideTaskList)
-         (addTask 'auto (list (cons 'name "OPL Exploration 1") (cons 'due "12 Mar 17") (cons 'priority "high") (cons 'duration 3)))
-         (addTask 'auto (list (cons 'name "OPL Partner Declarations") (cons 'due "19 Mar 17") (cons 'priority "low") (cons 'duration 4)))
-         (addTask 'auto (list (cons 'name "OPL Exploration 2") (cons 'due "26 Mar 17") (cons 'priority "medium") (cons 'duration 2)))
-         (editTask 1 (list (cons 'priority "very high") (cons 'duration 1)))
+         (addTask 'auto (list (cons 'name "OPL Exploration 1") (cons 'due (simpleMakeDate 12 3 2017)) (cons 'priority "high") (cons 'duration 3)))
+         (addTask 'auto (list (cons 'name "OPL Partner Declarations") (cons 'due (simpleMakeDate 19 3 2017)) (cons 'priority "low") (cons 'duration 4)))
+         (addTask 'auto (list (cons 'name "OPL Exploration 2") (cons 'due (simpleMakeDate 26 3 2017)) (cons 'priority "medium") (cons 'duration 2)))
+         (addTask 'auto (list (cons 'name "OPL Final Presentation") (cons 'due (simpleMakeDate 28 4 2017)) (cons 'priority "high") (cons 'duration 5)))
+         (editTask 1 (list (cons 'priority "very high") (cons 'duration 3)))
          (getTodaysTasks)))
 
 ; Connects to the uml cs server and defines in and out and input and output ports
-;(define-values (in out) (tcp-connect "cs.uml.edu" 23))
+(define-values (in out) (tcp-connect "cs.uml.edu" 23))
 
 ; Procedure for sending current tasks to server
-;(define (sync-up)
-;  (write (list 'sync-up (readTaskList)) out))
+(define (sync-up)
+  (write (list 'sync-up (readTaskList)) out))
 
 ; Procedure for replacing current tasks with those on the server
-;(define (sync-down-override)
-;  ((write (list 'sync-down-override) out)
-;  (overrideTaskList (read in))))
+(define (sync-down-override)
+  ((write (list 'sync-down-override) out)
+  (overrideTaskList (read in))))
