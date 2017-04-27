@@ -95,7 +95,10 @@
     (write 'Task: )
     (write (hash-ref Task 'name))
     (write ', Due: )
-    (write (dateString (hash-ref Task 'due)))
+    (let ([due (hash-ref Task 'due)])
+      (if (equal? "" due)
+          (write "")
+          (write (dateString due))))
     (write ', Duration: )
     (write (hash-ref Task 'duration))
     (write 'hours)
@@ -210,7 +213,7 @@
          (getTodaysTasks)))
 
 ; Connects to the uml cs server and defines in and out and input and output ports
-(define-values (in out) (tcp-connect "cs.uml.edu" 23))
+s(define-values (in out) (tcp-connect "cs.uml.edu" 23))
 
 ; Procedure for sending current tasks to server
 (define (sync-up)
