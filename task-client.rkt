@@ -4,19 +4,28 @@
 (require racket/tcp)
 (require racket/date)
 
+; procedures for manipulating the task list
 (provide addTask)
 (provide editTask)
 (provide deleteTask)
 (provide overrideTaskList)
+(provide updateTaskList)
+
+; procedures for accessing the task objects
 (provide getTodaysTasks)
 (provide readTaskList)
 (provide getTaskWithID)
+
+; procedures for changing settings
 (provide changeWorkHours)
+
+; procedures for creating and displaying due dates
 (provide dateString)
 (provide simpleMakeDate)
 
 ; file path to store json data in
 (define taskFile "tasks")
+
 
 ; list of all fields in a task object
 (define taskFields (list
