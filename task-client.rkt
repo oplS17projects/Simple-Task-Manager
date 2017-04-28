@@ -148,12 +148,13 @@
       (write-json
        (makeTaskList
         (cons ; add new task to list of existing tasks
-         (makeTask
-          (cons
-           (cons 'ID (if (equal? id 'auto) ; if an ID is provided, use it. Otherwise generate automatically
-                         (hash-ref taskList 'nextID)
-                         id))
-           fields))
+         (let ([filteredFields (filter (lambda (x) (not (equal? (car x) 'ID))) fields)])
+           (makeTask
+            (cons
+             (cons 'ID (if (equal? id 'auto) ; if an ID is provided, use it. Otherwise generate automatically
+                           (hash-ref taskList 'nextID)
+                           id))
+             fields)))
          (hash-ref taskList 'tasks))
         (if (equal? id 'auto) ; if we auto-generated the task ID, increment the 'next ID' value on the list object
             (+ (hash-ref taskList 'nextID) 1)
@@ -201,6 +202,14 @@
 ; Creates a date object without caring about time, day of the week, or day of the year, and auto-filling some fields
 (define (simpleMakeDate day month year)
   (date->seconds (make-date 0 0 0 day month year 0 0 (date-dst? (current-date)) (date-time-zone-offset (current-date)))))
+
+; Updates tasks in a task list
+(define (updateTaskList tasks)
+  (let ([hours (hash-ref (readTaskList) 'workHours)])
+    (begin
+      (overrideTaskList)
+      (map (lambda (x) (addTask 'auto x)) tasks)
+      (changeWorkHours hours))))
 
 ; Code for testing
 (define (tests)
