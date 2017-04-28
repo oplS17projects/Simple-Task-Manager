@@ -224,7 +224,8 @@
 (define (sync-down-override)
   (write (list 'sync-down-override) out)
   (flush-output out)
-  (overrideTaskList (read in)))
+  (overrideTaskList)
+  (hash-for-each (read in) makeTask))
 
 (define (quit)
   (write (list 'quit) out)

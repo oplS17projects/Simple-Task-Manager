@@ -40,7 +40,7 @@
   (let ([input (read in)])
     (cond
       [(eqv? (car input) 'sync-up) (overrideTaskList (cadr input))]
-      [(eqv? (car input) 'sync-down-override) (write (readTaskList) out)]
+      [(eqv? (car input) 'sync-down-override) (begin (write (readTaskList) out) (flush-output out))]
       [(eqv? (car input) 'quit) (begin (close-input-port in) (close-output-port out) (exit 0))]
       [else #t]))
   (loop))
