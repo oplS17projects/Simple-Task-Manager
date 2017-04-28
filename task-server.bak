@@ -33,13 +33,12 @@
       (close-output-port out))))
 
 ; Sets up ports
-(define listener (tcp-listen 8080))
+(define listener (tcp-listen 23))
 (define-values (in out) (tcp-accept listener))
 
-(define (loop)
+(define loop
   ((let ([input (read in)])
     (cond
       [(eqv? (car input) 'sync-up) (overrideTaskList (cadr input))]
-      [(eqv? (car input) 'sync-down-override) (write (readTaskList) out)]
-      [(eqv? (car input) 'quit) (begin (close-input-port in) (close-output-port out) (exit 0))])))
-  (loop))
+      [(eqv? (car input) 'sync-down-override) (write (readTaskList) out)]))
+  (loop)))

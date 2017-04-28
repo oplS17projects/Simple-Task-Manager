@@ -213,21 +213,13 @@
          (getTodaysTasks)))
 
 ; Connects to the uml cs server and defines in and out and input and output ports
-(define-values (in out) (tcp-connect "localhost" 8080))
+s(define-values (in out) (tcp-connect "cs.uml.edu" 23))
 
 ; Procedure for sending current tasks to server
 (define (sync-up)
-  (write (list 'sync-up (readTaskList)) out)
-  (flush-output out))
+  (write (list 'sync-up (readTaskList)) out))
 
 ; Procedure for replacing current tasks with those on the server
 (define (sync-down-override)
-  (write (list 'sync-down-override) out)
-  (flush-output out)
-  (overrideTaskList (read in)))
-
-(define (quit)
-  (write (list 'quit) out)
-  (flush-output out)
-  (close-input-port in)
-  (close-output-port out))
+  ((write (list 'sync-down-override) out)
+  (overrideTaskList (read in))))
