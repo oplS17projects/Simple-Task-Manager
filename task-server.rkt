@@ -39,6 +39,7 @@
 (define (loop)
   (let ([input (read in)])
     (cond
+      [(eof-object? input) #t]
       [(eqv? (car input) 'sync-up) (overrideTaskList (cadr input))]
       [(eqv? (car input) 'sync-down-override) (begin (write (readTaskList) out) (flush-output out))]
       [(eqv? (car input) 'quit) (begin (close-input-port in) (close-output-port out) (exit 0))]
