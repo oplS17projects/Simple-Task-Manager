@@ -235,18 +235,22 @@
 
 ; Procedure for sending current tasks to server
 (define (sync-up)
-  (write (list 'sync-up (readTaskList)) out)
+  (write-json (read-json taskFile) out)
   (flush-output out))
 
 ; Procedure for replacing current tasks with those on the server
 (define (sync-down-override)
-  (write (list 'sync-down-override) out)
+  (write 'sync-down-override out)
   (flush-output out)
   (overrideTaskList)
   (hash-for-each (read in) makeTask))
 
+(define (clear)
+  (write 'clear out)
+  (flush-output out))
+
 (define (quit)
-  (write (list 'quit) out)
+  (write 'quit out)
   (flush-output out)
   (close-input-port in)
   (close-output-port out))

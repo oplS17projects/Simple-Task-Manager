@@ -4,7 +4,7 @@
 (require racket/tcp)
 
 ; File path to store json data in
-(define taskFile "tasks")
+(define taskFile "server-tasks")
 
 ; Read the task list from the json file
 (define (readTaskList)
@@ -40,8 +40,9 @@
   (let ([input (read in)])
     (cond
       [(eof-object? input) #t]
-      [(eqv? (car input) 'sync-up) (overrideTaskList (cadr input))]
-      [(eqv? (car input) 'sync-down-override) (begin (write (readTaskList) out) (flush-output out))]
-      [(eqv? (car input) 'quit) (begin (close-input-port in) (close-output-port out) (exit 0))]
+      [(jsexpr? input) (updateTaskList input)]
+      [(eqv? input 'sync-down-override) (begin (write (read-json taskFile) out) (flush-output out))]
+      [(eqv? input 'clear) (overrideTaskList)]
+      [(eqv? input 'quit) (begin (close-input-port in) (close-output-port out) (exit 0))]
       [else #t]))
   (loop))
