@@ -227,8 +227,8 @@
          (addTask 'auto (list (cons 'name "OPL Partner Declarations") (cons 'due (simpleMakeDate 19 3 2017)) (cons 'priority "low") (cons 'duration 4)))
          (addTask 'auto (list (cons 'name "OPL Exploration 2") (cons 'due (simpleMakeDate 26 3 2017)) (cons 'priority "medium") (cons 'duration 2)))
          (addTask 'auto (list (cons 'name "Prepare OPL Final Presentation") (cons 'due (simpleMakeDate 28 4 2017)) (cons 'priority "high") (cons 'duration 5)))
-         (editTask 1 (list (cons 'priority "very high") (cons 'duration 3)))
-         (getTodaysTasks)))
+         (editTask 1 (list (cons 'priority "medium") (cons 'duration 3)))
+         (displayTodaysTasks)))
 
 ; Connects to the uml cs server and defines in and out and input and output ports
 (define-values (in out) (tcp-connect "localhost" 8080))
