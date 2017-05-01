@@ -142,18 +142,19 @@ Write concrete steps for your schedule to move from concept to working system.
 -->
 ### First Milestone (Sun Apr 9)
 
-Basic task objects can be fetched from the server, and basic interactions (view, add, delete, edit, sync) can be done through the REPL.  
+Basic task objects can be fetched from the server, and basic interactions (view, add, delete, edit, sync) can be done through the REPL.
 
 Server side application will be able to store basic task objects and send them to client.
 
 ### Second Milestone (Sun Apr 16)
 
-Can generate a "today's tasks" list, and have some simple customizations for it (Hours of work for the day, filter out certain tags)  
+Can generate a "today's tasks" list, and have some simple customizations for it (Hours of work for the day, etc)  
 Full basic server functionality will be implemented.
 
-### Public Presentation (Mon Apr 24, Wed Apr 26, or Fri Apr 28 [your date to be determined later])
+### Public Presentation Fri Apr 28
 
-Basic GUI to view, add, edit, and delete tasks. Panel for daily task list. Maybe generate panels for ever tags (or allow users to create a panel for a specific tags). Other stretch goals.  
+Very basic GUI to view tasks.
+
 Application will be functional and server stretch goals may be implemented. 
 
 ## Group Responsibilities  
@@ -171,7 +172,7 @@ Please use Github properly: each individual must make the edits to this file rep
 In the headings below, replace the silly names and GitHub handles with your actual ones.
 -->
 ### Cassandra Cooper @c-cooper:
-I am responsible for all baseline client code, including the task object, all sorting, filtering, and interaction functionality, and sending requests to the server (to sync/get full list).
+I was responsible for all baseline client code, including the task objects, all sorting, filtering, and interaction functionality, and the GUI.
 
 
 ### Chris Guyott @cguyott
