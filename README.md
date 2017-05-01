@@ -3,11 +3,11 @@
 ### Statement
 <!-- Describe your project. Why is it interesting? Why is it interesting to you personally? What do you hope to learn? 
 -->
-We are creating a basic task management system, which will include functionality to sync across devices, and auto-generate a daily "to-do" list from existing tasks (based on a number of user set parameters). This will be a good oportunity to see how functional programming might work in an application setting, rather than simply as a quick fetch script. The addition of an auto-generated todo list is also something we have no found in other individual task management/todo list software (Todoist, Wunderlist, etc), and we hope to find a good way to impliment it. We hope to learn how scheme and functional programming might be applied in a formal application, rather than just as a simple script.
+We created a basic task management system, which includes functionality to sync across devices, and auto-generate a daily "to-do" list from existing tasks (based on a number of user set parameters). This was a good oportunity to see how functional programming might work in an application setting, rather than simply as a quick fetch script. The addition of an auto-generated todo list is also something we have no found in other individual task management/todo list software (Todoist, Wunderlist, etc), and we found a good way to implement it. We learned how scheme and functional programming might be applied in a formal application, rather than just as a simple script.
 
 ### Analysis
 
-We will be using data abstraction, object-orientation and state modification in the implementation of task objects. These objects will store information like time, location, date, and tags that can be modified, displayed and shared by other parts of the program. We will use filter to select a subset of all tasks to display and map to transform the task data objects to objects that can be used by the gui. We will use iterative recursion to perform operations on each element of a list of tasks.
+We used data abstraction, object-orientation and state modification in the implementation of task objects. These objects store information like time, location, date, and tags that can be modified, displayed and shared by other parts of the program. We used filter to select a subset of all tasks to display and map to transform the task data objects to objects that can be used by the gui. We will use iterative recursion to perform operations on each element of a list of tasks.
 
 <!--
 Explain what approaches from class you will bring to bear on the project.
@@ -30,7 +30,7 @@ The idea here is to identify what ideas from the class you will use in carrying 
 
 ### External Technologies
 
-This program will be able to connect with a server to sync across multiple systems or devices. It will use JSON to pass the data between the server and client.
+This program is able to connect with a server and sync tasks between the device and server. It uses JSON to pass the data between the server and client.
 
 <!--
 You are encouraged to develop a project that connects to external systems. For example, this includes systems that:
@@ -56,9 +56,9 @@ If you are using some other starting materials, explain what they are. Basically
 
 ### Deliverable and Demonstration
 
-At completion we will be able to display a schedule and add/remove tasks from it. We will also be able to filter based on tags or task types and set priorities for tasks.
+At completion we are able to display a schedule and add/remove tasks from it. We will also be able to filter based on tags or task types and set priorities for tasks.
 
-This program will store and display user inputted data. We can show it working by adding, removing or modifying data through the program.
+This program stores and displays user inputted data. We can show it working by adding, removing or modifying data through the program.
 <!--
 Explain exactly what you'll have at the end. What will it be able to do at the live demo?
 
@@ -70,7 +70,7 @@ Will it be interactive? Can you show it working? This project involves a live de
 -->
 
 ### Evaluation of Results
-We have divided our goals for this program into core objectives and stretch goals.
+We divided our goals for this program into core objectives and stretch goals.
 #### Core
 Basic Task management system  
 - task object  
@@ -107,8 +107,8 @@ Basic Task management system
 - reminders  
 - GUI
 
-  
-Once we complete our core objectives then we will have completed the core of our project, however there are many additional components that we would like to implement. How many of these are actually implemented will depend on how difficult the core objectives are and how viable each stretch objective is.
+
+We have completed all of the core objectives outlined here, and a few of the stretch objectives, including a GUI.
 <!--
 How will you know if you are successful? 
 If you include some kind of _quantitative analysis,_ that would be good.
@@ -117,10 +117,10 @@ If you include some kind of _quantitative analysis,_ that would be good.
 ## Architecture Diagram
 ![Architecture Diagram](/SimpleTaskManagerDiagramV1.png?raw=true "Diagram")
  
- This diagram has two major parts: the client and the server. The data will be moved between these components using JSON as shown.  
+ This diagram has two major parts: the client and the server. The data is moved between these components using JSON as shown.  
  
 
- Within each part, we will handle the data as needed for whatever it will be used for. On the client side we have user input coming through the ui and being stored as data and sorting and filtering the data for display to the user.  
+ Within each part, we handle the data as needed for whatever it will be used for. On the client side we have user input coming through the ui and being stored as data and sorting and filtering the data for display to the user.  
  
 On the client side we will be moving between the client interface data, which will be represented using JSON, to the internal represention of the data in the program.  
 <!--
