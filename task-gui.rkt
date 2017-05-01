@@ -1,8 +1,6 @@
 #lang racket
 
 (require racket/gui)
-(require racket/date)
-(require json)
 (require "task-client.rkt")
 
 ; main window
@@ -193,14 +191,12 @@
                              [parent editTaskDialog]
                              [label "Duration"]))
     ; initialize fields
-    (let ([dateObj (seconds->date (hash-ref task 'due))])
-      (begin
-        (send nameBox set-value (hash-ref task 'name))
-        (send dueDayBox set-value (number->string (date-day dateObj)))
-        (send dueMonthBox set-value (number->string (date-month dateObj)))
-        (send dueYearBox set-value (number->string (date-year dateObj)))
-        (send priorityBox set-value (hash-ref task 'priority))
-        (send durationBox set-value (number->string (hash-ref task 'duration)))))
+    (send nameBox set-value (hash-ref task 'name))
+    (send dueDayBox set-value (number->string (getDay (hash-ref task 'due))))
+    (send dueMonthBox set-value (number->string (getMonth (hash-ref task 'due))))
+    (send dueYearBox set-value (number->string (getYear (hash-ref task 'due))))
+    (send priorityBox set-value (hash-ref task 'priority))
+    (send durationBox set-value (number->string (hash-ref task 'duration)))
     
     (define buttonPanel (new horizontal-panel% ; panel to hold buttons
                              [parent editTaskDialog]

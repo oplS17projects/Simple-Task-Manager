@@ -22,6 +22,9 @@
 ; procedures for creating and displaying due dates
 (provide dateString)
 (provide simpleMakeDate)
+(provide getDay)
+(provide getMonth)
+(provide getYear)
 
 ; file path to store json data in
 (define taskFile "tasks")
@@ -114,9 +117,25 @@
     (write ', Priority: )
     (writeln (hash-ref Task 'priority))))
 
+; Creates a date object without caring about time, day of the week, or day of the year, and auto-filling some fields
+(define (simpleMakeDate day month year)
+  (date->seconds (make-date 0 0 0 day month year 0 0 (date-dst? (current-date)) (date-time-zone-offset (current-date)))))
+
 ; pulls string to display a date
 (define (dateString seconds)
   (date->string (seconds->date seconds)))
+
+; extracts day from a unix timestamp
+(define (getDay seconds)
+  (date-day (seconds->date seconds)))
+
+; extracts month from unix timestamp
+(define (getMonth seconds)
+  (date-month (seconds->date seconds)))
+
+; extracts year from unix timestamp
+(define (getYear seconds)
+  (date-year (seconds->date seconds)))
 
 ; change the given fields in a task object to the given values
 (define (changeTaskObject task fields)
@@ -198,19 +217,13 @@
   (define (iter desiredHours currentHours allTasks newTasks)
     (if (or (< desiredHours currentHours) (null? allTasks))
         newTasks
-        (if (equal? "" (hash-ref (car allTasks) 'duration))
-            (iter desiredHours currentHours (cdr allTasks) newTasks)
-            (iter desiredHours
-                  (+ currentHours
-                     (hash-ref (car allTasks) 'duration))
-                  (cdr allTasks)
-                  (cons (car allTasks) newTasks)))))
+        (iter desiredHours
+              (+ currentHours
+                 (hash-ref (car allTasks) 'duration))
+              (cdr allTasks)
+              (cons (car allTasks) newTasks))))
   (let ([durationTasks (filter (lambda (x) (number? (hash-ref x 'duration))) tasks)])
     (iter hours 0 durationTasks '())))
-
-; Creates a date object without caring about time, day of the week, or day of the year, and auto-filling some fields
-(define (simpleMakeDate day month year)
-  (date->seconds (make-date 0 0 0 day month year 0 0 (date-dst? (current-date)) (date-time-zone-offset (current-date)))))
 
 ; Updates tasks in a task list
 (define (updateTaskList tasks)
